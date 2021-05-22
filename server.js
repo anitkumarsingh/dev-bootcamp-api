@@ -1,9 +1,18 @@
 const http = require('http');
 const PORT = 5000;
+const todos =[
+  {id:1,tex:'Todo One'},
+  {id:2,tex:'Todo Two'},
+  {id:3,tex:'Todo Three'},
+  {id:4,tex:'Todo Four'}
+]
 const server = http.createServer((req,res)=>{
-  const {headers,methods} =req;
-  console.log(headers,methods)
-  res.end();
+  res.setHeader('Content-type','application/json');
+  res.setHeader('X-Powered-By','Node')
+  res.end(JSON.stringify({
+    success:true,
+    data:todos
+  }));
 })
 
 server.listen(PORT,()=>console.log(`Server is running on port ${PORT} `))
