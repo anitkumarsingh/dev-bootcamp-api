@@ -7,14 +7,23 @@ const todos =[
   {id:4,tex:'Todo Four'}
 ]
 const server = http.createServer((req,res)=>{
-  res.writeHead(404,{
+  res.writeHead(200,{
     'Content-type':'application/json',
     'X-Powered-By':'Node.js'
   })
+ const {authorization} = req.headers
+ console.log(authorization)
+
+ let body =[];
+ req.on('data',chunk=>{
+   body.push(chunk);
+ }).on('end',()=>{
+   body =Buffer.concat(body).toString();
+   console.log(body)
+ })
   res.end(JSON.stringify({
     success:true,
-    error:'Not found',
-    data:null
+    data:todos
   }));
 })
 
