@@ -7,24 +7,45 @@ const todos =[
   {id:4,tex:'Todo Four'}
 ]
 const server = http.createServer((req,res)=>{
-  res.writeHead(200,{
-    'Content-type':'application/json',
-    'X-Powered-By':'Node.js'
-  })
+ const {method,url} = req;
  const {authorization} = req.headers
  console.log(authorization)
+ let status =404;
+ let response ={
+   success:false,
+   data:null
+ }
 
  let body =[];
  req.on('data',chunk=>{
    body.push(chunk);
  }).on('end',()=>{
    body =Buffer.concat(body).toString();
-   console.log(body)
+   if(method ==='GET' && url==='/todos'){
+     status=200;
+     response.success=true;
+     response.data=todos
+   }else if(method ==='POST' && url ==='/todos'){
+     const {id,text} = JSON.parse(body);
+     if(!id || !text){
+       status = 400;
+       response.success=false;
+       response.data=null
+     }else{
+      todos.push({id,text});
+      status =201;
+      response.success =true;
+      response.data = todos
+     }
+   
+   }
+   res.writeHead(status,{
+    'Content-type':'application/json',
+    'X-Powered-By':'Node.js'
+  })
+  res.end(JSON.stringify(response));
  })
-  res.end(JSON.stringify({
-    success:true,
-    data:todos
-  }));
+ 
 })
 
 server.listen(PORT,()=>console.log(`Server is running on port ${PORT} `))
