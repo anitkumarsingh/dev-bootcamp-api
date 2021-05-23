@@ -1,8 +1,9 @@
 // @desc  Logs to console
 
 const logger = (req, res, next) => {
-  req.hello = 'Hello world!';
-  console.log('middleware ran');
+  console.log(
+    `${req.method} ${req.protocol}://${req.hostname}:${process.env.PORT}${req.originalUrl}`
+  );
   next();
 };
 
