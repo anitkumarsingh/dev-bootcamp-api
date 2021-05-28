@@ -22,7 +22,7 @@ const bootcampSchema = new mongoose.Schema({
     ]
   },
   phone: {
-    type: Number,
+    type: String,
     maxlength: [20, 'Phone number can not be more than 20 characters']
   },
   email: {
@@ -63,7 +63,8 @@ const bootcampSchema = new mongoose.Schema({
       'React developer',
       'React Native Developer',
       'Mobile Development',
-      'UX/UI Development',
+      'Web Development',
+      'UI/UX',
       'Data science',
       'Business',
       'Other'
