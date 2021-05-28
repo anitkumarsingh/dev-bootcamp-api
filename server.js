@@ -1,51 +1,29 @@
-const http = require('http');
-const PORT = 5000;
-const todos =[
-  {id:1,tex:'Todo One'},
-  {id:2,tex:'Todo Two'},
-  {id:3,tex:'Todo Three'},
-  {id:4,tex:'Todo Four'}
-]
-const server = http.createServer((req,res)=>{
- const {method,url} = req;
- const {authorization} = req.headers
- console.log(authorization)
- let status =404;
- let response ={
-   success:false,
-   data:null
- }
+const express = require('express');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const connectDB = require('./config/connectDB');
 
- let body =[];
- req.on('data',chunk=>{
-   body.push(chunk);
- }).on('end',()=>{
-   body =Buffer.concat(body).toString();
-   if(method ==='GET' && url==='/todos'){
-     status=200;
-     response.success=true;
-     response.data=todos
-   }else if(method ==='POST' && url ==='/todos'){
-     const {id,text} = JSON.parse(body);
-     if(!id || !text){
-       status = 400;
-       response.success=false;
-       response.data=null
-     }else{
-      todos.push({id,text});
-      status =201;
-      response.success =true;
-      response.data = todos
-     }
-   
-   }
-   res.writeHead(status,{
-    'Content-type':'application/json',
-    'X-Powered-By':'Node.js'
-  })
-  res.end(JSON.stringify(response));
- })
- 
-})
+// Routes
+const bootcamps = require('./routes/bootcamps');
 
-server.listen(PORT,()=>console.log(`Server is running on port ${PORT} `))
+dotenv.config({ path: './config/config.env' });
+
+// connect to DB
+connectDB();
+
+const app = express();
+//Body parser
+app.use(express.json());
+const PORT = process.env.PORT;
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+app.use('/api/v1/bootcamps', bootcamps);
+
+app.listen(PORT, () =>
+  console.log(
+    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`
+  )
+);
