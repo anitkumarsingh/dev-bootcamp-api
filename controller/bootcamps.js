@@ -32,7 +32,8 @@ exports.getBootcamp = async (req, res, next) => {
       data: bootcamp
     });
   } catch (error) {
-    res.status(404).json({ success: false, msg: 'Bootcamp not found' });
+    // res.status(404).json({ success: false, msg: 'Bootcamp not found' });
+    next(error);
   }
 };
 

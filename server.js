@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/connectDB');
-
+const errorHandler = require('./middleware/errorHandler');
 // Routes
 const bootcamps = require('./routes/bootcamps');
 
@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps', bootcamps);
+app.use(errorHandler);
 
 app.listen(PORT, () =>
   console.log(
