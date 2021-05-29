@@ -3,10 +3,10 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/connectDB');
 const errorHandler = require('./middleware/errorHandler');
-// Routes
-const bootcamps = require('./routes/bootcamps');
 
 dotenv.config({ path: './config/config.env' });
+// Routes
+const bootcamps = require('./routes/bootcamps');
 
 // connect to DB
 connectDB();

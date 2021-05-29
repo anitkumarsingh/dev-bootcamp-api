@@ -120,7 +120,7 @@ bootcampSchema.pre('save', async function (next) {
     city: loc[0].city,
     state: loc[0].statecode,
     zip: loc[0].zipcode,
-    country: loc[0].country
+    country: loc[0].countrycode
   };
   next();
 });
