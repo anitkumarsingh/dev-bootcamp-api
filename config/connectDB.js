@@ -7,7 +7,7 @@ const connectDB = async () => {
     useUnifiedTopology: true,
     useFindAndModify: true
   });
-  console.log(`Connected to database on ${conn.connection.host}`);
+  console.log(`Connected to database on ${conn.connection.host}`.blue);
 };
 
 module.exports = connectDB;
