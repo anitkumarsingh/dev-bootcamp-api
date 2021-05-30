@@ -12,7 +12,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   let reqQuery = { ...req.query };
   // exclude fields
 
-  const removedFields = ['select', 'sort'];
+  const removedFields = ['select', 'sort', 'page', 'limit'];
   // Loop through removedFields and delete field from req.query
   removedFields.forEach((field) => delete reqQuery[field]);
 
@@ -36,7 +36,17 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   if (req.query.sort) {
     const fields = req.query.sort.split(',').join(' ');
     query = query.sort(fields);
+  } else {
+    query = query.sort('-createdAt');
   }
+
+  //Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 100;
+  const skip = (page - 1) * limit;
+
+  query = query.skip(skip).limit(limit);
+
   // executing query
   const bootcamps = await query;
 
