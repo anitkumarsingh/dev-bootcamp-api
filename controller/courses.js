@@ -25,3 +25,20 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
     data: courses
   });
 });
+
+// @description    Get single courses
+// @route          GET /api/v1/courses/:id
+// @access         Public
+exports.getCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id);
+  if (!course) {
+    return next(
+      new errorResponse(`Course with id ${req.params.id} not found`, 404)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    msg: 'Course fetched successfully',
+    data: course
+  });
+});
