@@ -132,8 +132,15 @@ bootcampSchema.pre('save', async function (next) {
   this.address = undefined;
   next();
 });
-// Reverse vitual populate
 
+// Cascade delete once bootcamp is deleted
+bootcampSchema.pre('remove', async function (next) {
+  console.log('delete ran', this._id);
+  await this.model('Courses').deleteMany({ bootcamp: this._id });
+  next();
+});
+
+// Reverse vitual populate
 bootcampSchema.virtual('courses', {
   ref: 'Courses',
   localField: '_id',
