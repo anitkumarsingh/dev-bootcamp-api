@@ -1,12 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const colors = require('colors');
 const connectDB = require('./config/connectDB');
 const errorHandler = require('./middleware/errorHandler');
-// Routes
-const bootcamps = require('./routes/bootcamps');
 
 dotenv.config({ path: './config/config.env' });
+// Routes
+const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 // connect to DB
 connectDB();
@@ -21,10 +23,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
+
 app.use(errorHandler);
 
 app.listen(PORT, () =>
   console.log(
-    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.green
+      .italic
   )
 );
