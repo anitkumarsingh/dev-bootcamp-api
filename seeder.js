@@ -30,8 +30,9 @@ mongoose.connect(process.env.MONGO_DB_URL, {
 const dataImporter = async () => {
   try {
     await Bootcamp.create(bootcamps);
-    // await Course.create(courses);
+    await Course.create(courses);
     console.log('Data inserted into database'.green.inverse);
+    process.exit();
   } catch (error) {
     console.log('error', error);
   }
@@ -42,6 +43,7 @@ const dataDestroyer = async () => {
     await Bootcamp.deleteMany();
     await Course.deleteMany();
     console.log('All data deleted from database'.red.inverse);
+    process.exit();
   } catch (error) {
     console.log('error', error);
   }
