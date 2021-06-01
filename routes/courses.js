@@ -13,7 +13,11 @@ const advancedResults = require('../middleware/advancedResults');
 router
   .route('/')
   .get(
-    advancedResults(Courses, { path: 'bootcamp', select: 'name description' }),
+    advancedResults(
+      Courses,
+      { path: 'bootcamp', select: 'name description' },
+      'Courses'
+    ),
     getCourses
   )
   .post(addCourse);

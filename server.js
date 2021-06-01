@@ -6,11 +6,13 @@ const colors = require('colors');
 const fileupload = require('express-fileupload');
 const connectDB = require('./config/connectDB');
 const errorHandler = require('./middleware/errorHandler');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './config/config.env' });
 // Routes
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 
 // connect to DB
 connectDB();
@@ -18,6 +20,9 @@ connectDB();
 const app = express();
 //Body parser
 app.use(express.json());
+
+// Cookies parser
+app.use(cookieParser());
 
 const PORT = process.env.PORT;
 
@@ -32,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 
