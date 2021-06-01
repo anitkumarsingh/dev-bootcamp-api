@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -23,7 +24,7 @@ const userSchema = mongoose.Schema({
   role: {
     type: String,
     required: [true, 'Please select role'],
-    enum: ['Admin', 'User', 'Publiser'],
+    enum: ['Admin', 'User', 'Publisher'],
     default: 'User'
   },
   resetPasswordToken: String,
@@ -33,5 +34,10 @@ const userSchema = mongoose.Schema({
     default: Date.now
   }
 });
-
+// Encrypting password
+userSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 module.exports = mongoose.model('User', userSchema);
