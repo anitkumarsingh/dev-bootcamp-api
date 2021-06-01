@@ -6,6 +6,7 @@ const colors = require('colors');
 const fileupload = require('express-fileupload');
 const connectDB = require('./config/connectDB');
 const errorHandler = require('./middleware/errorHandler');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './config/config.env' });
 // Routes
@@ -19,6 +20,9 @@ connectDB();
 const app = express();
 //Body parser
 app.use(express.json());
+
+// Cookies parser
+app.use(cookieParser());
 
 const PORT = process.env.PORT;
 

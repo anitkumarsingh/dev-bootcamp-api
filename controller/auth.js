@@ -1,6 +1,7 @@
 const User = require('../models/users');
 const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
+const sendTokenResponse = require('../utils/setCookies');
 
 // @description    Register user
 // @route          POST /api/v1/auth/register
@@ -13,12 +14,8 @@ exports.register = asyncHandler(async (req, res, next) => {
     password,
     role
   });
-  const token = user.getSignedToken();
-  res.status(201).json({
-    msg: 'User registered successfully!',
-    data: user,
-    token
-  });
+
+  sendTokenResponse(user, 201, res, 'User registered successfully!');
 });
 
 // @description    Login user
@@ -36,7 +33,6 @@ exports.userLogin = asyncHandler(async (req, res, next) => {
   if (!user) {
     return next(new errorResponse('Invalid cridential', 401));
   }
-  const token = user.getSignedToken();
 
   const isValidPassword = await user.matchPassword(password);
 
@@ -44,8 +40,5 @@ exports.userLogin = asyncHandler(async (req, res, next) => {
     return next(new errorResponse('Invalid cridential', 401));
   }
 
-  res.status(200).json({
-    msg: 'Login successfull!',
-    token
-  });
+  sendTokenResponse(user, 200, res, 'Login successfull!');
 });
