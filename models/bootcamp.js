@@ -99,6 +99,11 @@ const bootcampSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    bootcamp: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true
+    },
     createdAt: {
       type: Date,
       default: Date.now
