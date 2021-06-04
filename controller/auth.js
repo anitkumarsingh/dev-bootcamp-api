@@ -53,5 +53,8 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       new errorResponse(`There is no user with email id ${req.body.email}`, 404)
     );
   }
-  res.status(200).json({ success: true, msg: 'User found' });
+  const resetToken = user.getRestTokenPassword();
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({ success: true, msg: 'User found', user });
 });
