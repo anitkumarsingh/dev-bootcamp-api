@@ -24,11 +24,11 @@ router
     ),
     getCourses
   )
-  .post(protectRoutes, authorizeRoles('Admin', 'Published'), addCourse);
+  .post(protectRoutes, authorizeRoles('Admin', 'Publisher'), addCourse);
 router
   .route('/:id')
   .get(getCourse)
-  .put(protectRoutes, authorizeRoles('Admin', 'Published'), updateCourse)
-  .delete(protectRoutes, authorizeRoles('Admin', 'Published'), deleteCourse);
+  .put(protectRoutes, authorizeRoles('Admin', 'Publisher'), updateCourse)
+  .delete(protectRoutes, authorizeRoles('Admin', 'Publisher'), deleteCourse);
 
 module.exports = router;
