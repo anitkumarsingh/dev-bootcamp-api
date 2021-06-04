@@ -42,3 +42,16 @@ exports.userLogin = asyncHandler(async (req, res, next) => {
 
   sendTokenResponse(user, 200, res, 'Login successfull!');
 });
+
+// @description    Forgot password
+// @route          POST /api/v1/auth/forgotpassword
+// @access         Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(
+      new errorResponse(`There is no user with email id ${req.body.email}`, 404)
+    );
+  }
+  res.status(200).json({ success: true, msg: 'User found' });
+});
