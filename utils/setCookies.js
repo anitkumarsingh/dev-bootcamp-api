@@ -1,5 +1,4 @@
 const sendTokenResponse = (model, statusCode, res, msg) => {
-  console.log(model);
   const token = model.getSignedToken();
   const options = {
     expires: new Date(
