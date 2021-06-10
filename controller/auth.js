@@ -45,6 +45,21 @@ exports.userLogin = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res, 'Login successfull!');
 });
 
+// @description    Get user
+// @route          GET /api/v1/auth/me
+// @access         Private
+exports.getMe = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return next(new errorResponse('No user found!', 404));
+  }
+  res.status(200).json({
+    success: true,
+    msg: 'Your profile fetched successfully!',
+    data: user
+  });
+});
+
 // @description    Forgot password
 // @route          POST /api/v1/auth/forgotpassword
 // @access         Public
@@ -73,7 +88,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     });
     res.status(200).json({ success: true, msg: 'Email sent' });
   } catch (error) {
-    console.log(error);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save({ validateBeforeSave: false });
@@ -89,9 +103,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 // @description    Reset Password
 // @route          PUT /api/v1/auth/resetpassword/:resettoken
 // @access         Public
-exports.restpassword = asyncHandler(async (req, res, next) => {
+exports.resetpassword = asyncHandler(async (req, res, next) => {
   // create hash token
-  console.log('reset password', req.params.resettoken);
+  console.log('params', req.params.resettoken);
   const resetPasswordToken = crypto
     .createHash('sha256')
     .update(req.params.resettoken)
@@ -101,7 +115,7 @@ exports.restpassword = asyncHandler(async (req, res, next) => {
     resetPasswordToken,
     resetPasswordExpires: { $gt: Date.now() }
   });
-
+  console.log('user', user, resetPasswordToken);
   if (!user) {
     return next(new errorResponse('Invalid Token', 400));
   }
