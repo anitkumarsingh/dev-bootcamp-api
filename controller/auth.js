@@ -60,6 +60,26 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @description    Get user details
+// @route          GET /api/v1/auth/user/updatedetails
+// @access         Private
+exports.updateMyDetails = asyncHandler(async (req, res, next) => {
+  const fieldsToBeUpdate = {
+    name,
+    email
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToBeUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    msg: 'Your profile fetched successfully!',
+    data: user
+  });
+});
+
 // @description    Forgot password
 // @route          POST /api/v1/auth/forgotpassword
 // @access         Public
